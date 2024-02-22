@@ -8,6 +8,7 @@ Este projeto é uma aplicação em Windows Presentation Foundation (WPF) desenvo
 - Seleção de Data Início e Data Fim da consulta
 - Agrupamento por tipo de indicador
 - Exportação para CSV
+- Salvamento automático das exportações em um banco de dados SQLite
 
 ## Capturas de Tela
 ![Interface do usuário](https://github.com/jpnas/projeto-polo/assets/61993673/659390a8-f2b6-4379-ad3d-297211254300)
