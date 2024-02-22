@@ -22,6 +22,19 @@ namespace projeto_polo.ViewModel
         private TableFilter _tableFilter = new TableFilter();
         public ObservableCollection<Item> Items { get; set; }
         private string jsonResponse;
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                if (_isLoading != value)
+                {
+                    _isLoading = value;
+                    OnPropertyChanged(nameof(IsLoading));
+                }
+            }
+        }
         public class ResponseWrapper
         {
             public List<Item> Value { get; set; }
@@ -81,16 +94,20 @@ namespace projeto_polo.ViewModel
                     string filePath = dlg.FileName;
 
                     var csvData = new StringBuilder();
-
-                    // Adicionar cabeçalhos das colunas ao CSV
-                    foreach (var column in dataGrid.Columns)
-                    {
-                        csvData.Append(column.Header);
-                        csvData.Append(",");
-                    }
+   
+                    csvData.Append("Indicador,");
+                    csvData.Append("Data,");
+                    csvData.Append("DataReferencia,");
+                    csvData.Append("Media,");
+                    csvData.Append("Mediana,");
+                    csvData.Append("DesvioPadrao,");
+                    csvData.Append("Minimo,");
+                    csvData.Append("Maximo,");
+                    csvData.Append("Indicador,");
+                    csvData.Append("numeroRespondentes,");
+                    csvData.Append("baseCalculo,");
                     csvData.AppendLine();
 
-                    // Adicionar dados das linhas ao CSV
                     foreach (var item in Items)
                     {
                         csvData.Append($"{item.Indicador},");
@@ -106,7 +123,6 @@ namespace projeto_polo.ViewModel
                         csvData.AppendLine();
                     }
 
-                    // Escrever os dados CSV em um arquivo
                     System.IO.File.WriteAllText(filePath, csvData.ToString());
                 }
 
@@ -159,6 +175,7 @@ namespace projeto_polo.ViewModel
         {
             try
             {
+                IsLoading = true;
                 string url = "https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativaMercadoMensais?%24format=json&%24top=1000";
                 using (var request = new HttpRequestMessage(HttpMethod.Get, url))
                 {
@@ -180,6 +197,10 @@ namespace projeto_polo.ViewModel
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao buscar dados: {ex.Message}");
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
     }

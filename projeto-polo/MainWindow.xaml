@@ -126,6 +126,13 @@
                     <DataGridTextColumn Binding="{Binding baseCalculo}" Header="Base de Cálculo" />
                 </DataGrid.Columns>
             </DataGrid>
+            <ProgressBar
+                Height="5"
+                VerticalAlignment="Bottom"
+                Background="LightSkyBlue"
+                Foreground="DeepSkyBlue"
+                IsIndeterminate="{Binding IsLoading}"
+                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
         </Grid>
     </Grid>
 </Window>
