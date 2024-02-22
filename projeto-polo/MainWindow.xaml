@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:projeto_polo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Expectativa do mercado mensal"
-    Width="780"
+    Width="776"
     Height="600"
     mc:Ignorable="d">
     <Grid>
