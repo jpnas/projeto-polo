@@ -1,13 +1,13 @@
 ## Descrição
 
-Este projeto é uma aplicação Windows Presentation Foundation (WPF) desenvolvida para visualizar séries históricas da expectativa do mercado mensal, obtidas através da API pública do Banco Central do Brasil.
+Este projeto é uma aplicação em Windows Presentation Foundation (WPF) desenvolvida para visualizar séries históricas da expectativa do mercado mensal, obtidas através da API pública do Banco Central do Brasil.
 
 ## Recursos
 
 - Seleção de tipo de Indicador
 - Seleção de Data Início e Data Fim da consulta
-- Exportação para CSV
 - Agrupamento por tipo de indicador
+- Exportação para CSV
 
 ## Capturas de Tela
 ![Interface do usuário](https://github.com/jpnas/projeto-polo/assets/61993673/659390a8-f2b6-4379-ad3d-297211254300)
@@ -20,7 +20,9 @@ Este projeto é uma aplicação Windows Presentation Foundation (WPF) desenvolvi
 
 ### Clonar o Repositório
 Abra o terminal ou prompt de comando e execute o seguinte comando para clonar o repositório:
-`git clone https://github.com/jpnas/projeto-polo.git`
+```bash
+git clone https://github.com/jpnas/projeto-polo.git
+```
 
 ### Compilar e Executar o Projeto
 Abra o projeto no Visual Studio e pressione F5 ou clique no botão:
