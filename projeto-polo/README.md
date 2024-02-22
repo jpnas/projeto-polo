@@ -13,4 +13,4 @@ Este projeto é uma aplicação Windows Presentation Foundation (WPF) desenvolvi
 
 ## Capturas de Tela
 
-![Interface do usuário](screenshot.png)
+![Interface do usuário](/Resources/screenshot.png)
