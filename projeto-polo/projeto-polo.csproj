@@ -23,4 +23,8 @@
     <Resource Include="Resources\refresh-icon.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="View\" />
+  </ItemGroup>
+
 </Project>
