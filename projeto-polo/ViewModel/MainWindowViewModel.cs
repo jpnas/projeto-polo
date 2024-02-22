@@ -49,8 +49,7 @@ namespace projeto_polo.ViewModel
         }
         public ICommand ExportCommand { get; private set; }
 
-        public RelayCommand FilterCommand => new RelayCommand(execute => FilterTable());
-        public RelayCommand RefreshCommand => new RelayCommand(execute => RefreshTable());
+        public RelayCommand RefreshCommand => new RelayCommand(execute => FetchDataAsync());
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -59,10 +58,10 @@ namespace projeto_polo.ViewModel
             Items = new ObservableCollection<Item>();
             TableFilter = new TableFilter
             {
-                ShowIPCA = true,
-                ShowIGPM = true,
-                ShowSelic = true,
-                FromDate = DateTime.Now.AddMonths(-1),
+                ShowIPCA = false,
+                ShowIGPM = false,
+                ShowSelic = false,
+                FromDate = DateTime.Now.AddMonths(-12),
                 ToDate = DateTime.Now
             };
             ExportCommand = new RelayCommand(ExportToCSV);
@@ -124,50 +123,64 @@ namespace projeto_polo.ViewModel
             }
         }
 
-        public async void RefreshTable()
-        {
-            try
-            {
-                FetchDataAsync();
-                TableFilter = new TableFilter
-                {
-                    ShowIPCA = true,
-                    ShowIGPM = true,
-                    ShowSelic = true,
-                    FromDate = DateTime.Now.AddMonths(-1),
-                    ToDate = DateTime.Now
-                };
-                MessageBox.Show("Dados atualizados.");
-            }
-            catch
-            {
-                MessageBox.Show("Erro ao atualizar dados.");
-            }
-        }
-
-        private void FilterTable()
-        {
-            var filteredItems = JsonConvert.DeserializeObject<ResponseWrapper>(jsonResponse).Value.Where(item =>
-         (TableFilter.ShowIPCA && item.Indicador.StartsWith("IPCA")) ||
-         (TableFilter.ShowIGPM && item.Indicador.StartsWith("IGP-M")) ||
-         (TableFilter.ShowSelic && item.Indicador.StartsWith("Selic"))
-     ).Where(item =>
-         item.Data >= TableFilter.FromDate && item.Data <= TableFilter.ToDate
-     ).ToList();
-
-            Items.Clear();
-            foreach (var item in filteredItems)
-            {
-                Items.Add(item);
-            }
-        }
-
         private async Task FetchDataAsync()
         {
             try
             {
                 IsLoading = true;
-                string url = "https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativaMercadoMensais?%24format=json&%24top=1000";
+                bool hasIndicatorFilter = false;
+
+                string baseUrl = "https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativaMercadoMensais";
+
+                string queryParams = $"?$format=json";
+
+                if (TableFilter != null)
+                {
+                    if (TableFilter.FromDate != null && TableFilter.ToDate != null)
+                    {
+                        queryParams += $"&$filter=(Data ge '{TableFilter.FromDate:yyyy-MM-dd}' and Data le '{TableFilter.ToDate:yyyy-MM-dd}')";
+                    }
+
+                    if (TableFilter.ShowIPCA)
+                    {
+                        queryParams += " and (Indicador eq 'IPCA'";
+                        hasIndicatorFilter = true;
+                    }
+                    if (TableFilter.ShowIGPM)
+                    {
+                        if (hasIndicatorFilter)
+                        {
+                            queryParams += " or Indicador eq 'IGP-M'";
+                        }
+                        else
+                        {
+                            queryParams += " and (Indicador eq 'IGP-M'";
+                            hasIndicatorFilter = true;
+                        }
+                    }
+                    if (TableFilter.ShowSelic)
+                    {
+                        if (hasIndicatorFilter)
+                        {
+                            queryParams += " or Indicador eq 'Selic'";
+                        }
+                        else
+                        {
+                            queryParams += " and (Indicador eq 'Selic'";
+                            hasIndicatorFilter = true;
+                        }
+                    }
+
+                    if (hasIndicatorFilter)
+                    {
+                        queryParams += ")";
+                    }
+                    else
+                    {
+                        queryParams += " and (Indicador eq 'IPCA' or Indicador eq 'IGP-M' or Indicador eq 'Selic')";
+                    }
+                }
+                string url = baseUrl + queryParams;
                 using (var request = new HttpRequestMessage(HttpMethod.Get, url))
                 {
                     request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
@@ -182,6 +195,7 @@ namespace projeto_polo.ViewModel
                         {
                             Items.Add(item);
                         }
+                        MessageBox.Show("Dados atualizados.");
                     }
                 }
             }
@@ -194,5 +208,6 @@ namespace projeto_polo.ViewModel
                 IsLoading = false;
             }
         }
+
     }
 }

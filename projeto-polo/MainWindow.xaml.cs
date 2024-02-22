@@ -11,12 +11,6 @@ namespace projeto_polo
             InitializeComponent();
             MainWindowViewModel vm = new MainWindowViewModel();
             DataContext = vm;
-
-            FromDate.DisplayDateStart = DateTime.Today.AddMonths(-1);
-            FromDate.DisplayDateEnd = DateTime.Today;
-
-            ToDate.DisplayDateStart = DateTime.Today.AddMonths(-1);
-            ToDate.DisplayDateEnd = DateTime.Today;
         }
 
         private void FromDateDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
