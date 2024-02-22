@@ -1,6 +1,6 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using projeto_polo.Model;
 
 namespace projeto_polo
 {
@@ -9,6 +9,11 @@ namespace projeto_polo
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            DatabaseFacade facade = new DatabaseFacade(new DatabaseContext()); 
+            facade.EnsureCreated();
+        }
     }
 
 }

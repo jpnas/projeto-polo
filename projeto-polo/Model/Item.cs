@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace projeto_polo.Model
+﻿namespace projeto_polo.Model
 {
     public class Item
     {
-        public string Indicador {  get; set; }
+        public string? Indicador {  get; set; }
         public DateTime Data { get; set; }
         public DateTime DataReferencia { get; set; }
         public float Media { get; set; }

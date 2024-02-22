@@ -14,8 +14,8 @@ namespace projeto_polo.ViewModel
 {
     class MainWindowViewModel : INotifyPropertyChanged
     {
-        private HttpClient _httpClient = new HttpClient();
-        private TableFilter _tableFilter = new TableFilter();
+        private HttpClient _httpClient = new();
+        private TableFilter _tableFilter = new();
         public ObservableCollection<Item> Items { get; set; }
         private string jsonResponse;
         private bool _isLoading;
@@ -33,7 +33,7 @@ namespace projeto_polo.ViewModel
         }
         public class ResponseWrapper
         {
-            public List<Item> Value { get; set; }
+            public List<Item>? Value { get; set; }
         }
         public TableFilter TableFilter
         {
@@ -77,7 +77,7 @@ namespace projeto_polo.ViewModel
         {
             if (parameter is DataGrid dataGrid)
             {
-                SaveFileDialog dlg = new SaveFileDialog
+                SaveFileDialog dlg = new()
                 {
                     Filter = "Arquivos CSV (*.csv)|*.csv",
                     InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
@@ -120,6 +120,29 @@ namespace projeto_polo.ViewModel
 
                     System.IO.File.WriteAllText(filePath, csvData.ToString());
                 }
+
+                using DatabaseContext dbContext = new();
+                string guid = Guid.NewGuid().ToString();
+                dbContext.Exports.Add(new Export() { Id = guid, CreatedOn = DateTime.Now });
+                foreach (var item in Items)
+                {
+                    dbContext.Items.Add(new ExportItem()
+                    {
+                        ItemId = Guid.NewGuid().ToString(),
+                        ExportId = guid,
+                        Indicador = item.Indicador,
+                        Data = item.Data,
+                        DataReferencia = item.DataReferencia,
+                        Media = item.Media,
+                        Mediana = item.Mediana,
+                        DesvioPadrao = item.DesvioPadrao,
+                        Minimo = item.Minimo,
+                        Maximo = item.Maximo,
+                        numeroRespondentes = item.numeroRespondentes,
+                        baseCalculo = item.baseCalculo
+                    });
+                }
+                dbContext.SaveChanges();
             }
         }
 
@@ -136,10 +159,8 @@ namespace projeto_polo.ViewModel
 
                 if (TableFilter != null)
                 {
-                    if (TableFilter.FromDate != null && TableFilter.ToDate != null)
-                    {
-                        queryParams += $"&$filter=(Data ge '{TableFilter.FromDate:yyyy-MM-dd}' and Data le '{TableFilter.ToDate:yyyy-MM-dd}')";
-                    }
+        
+                    queryParams += $"&$filter=(Data ge '{TableFilter.FromDate:yyyy-MM-dd}' and Data le '{TableFilter.ToDate:yyyy-MM-dd}')";
 
                     if (TableFilter.ShowIPCA)
                     {
@@ -195,7 +216,7 @@ namespace projeto_polo.ViewModel
                         {
                             Items.Add(item);
                         }
-                        MessageBox.Show("Dados atualizados.");
+                        MessageBox.Show("Dados atualizados com sucesso.");
                     }
                 }
             }
