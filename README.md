@@ -4,7 +4,7 @@ Este projeto é uma aplicação em Windows Presentation Foundation (WPF) desenvo
 
 ## Recursos
 
-- Seleção de tipo de Indicador
+- Seleção de tipo de indicador
 - Seleção de Data Início e Data Fim da consulta
 - Agrupamento por tipo de indicador
 - Exportação para CSV
