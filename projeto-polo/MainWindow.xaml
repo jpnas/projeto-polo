@@ -66,6 +66,7 @@
                         Name="FromDate"
                         Margin="5,0,5,0"
                         VerticalAlignment="Center"
+                        DisplayDateEnd="{Binding TableFilter.ToDate}"
                         SelectedDate="{Binding TableFilter.FromDate}" />
 
                     <TextBlock
@@ -76,6 +77,7 @@
                         Name="ToDate"
                         Margin="5,0,5,0"
                         VerticalAlignment="Center"
+                        DisplayDateStart="{Binding TableFilter.FromDate}"
                         SelectedDate="{Binding TableFilter.ToDate}" />
                     <Button
                         Width="45"

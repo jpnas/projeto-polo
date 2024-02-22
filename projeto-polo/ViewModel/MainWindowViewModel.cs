@@ -2,17 +2,13 @@
 using projeto_polo.Model;
 using System.Collections.ObjectModel;
 using System.Net.Http;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Windows;
-using System.IO;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Windows.Input;
 using System.Text;
 using System.Windows.Controls;
 using Microsoft.Win32;
-using static System.Net.WebRequestMethods;
 
 namespace projeto_polo.ViewModel
 {
@@ -125,11 +121,6 @@ namespace projeto_polo.ViewModel
 
                     System.IO.File.WriteAllText(filePath, csvData.ToString());
                 }
-
-
-
-
-
             }
         }
 
