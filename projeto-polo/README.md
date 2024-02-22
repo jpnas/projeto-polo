@@ -12,5 +12,4 @@ Este projeto é uma aplicação Windows Presentation Foundation (WPF) desenvolvi
 - Agrupamento por tipo de indicador
 
 ## Capturas de Tela
-
-![Interface do usuário](/Resources/screenshot.png)
+![Interface do usuário](https://github.com/jpnas/projeto-polo/assets/61993673/659390a8-f2b6-4379-ad3d-297211254300)
