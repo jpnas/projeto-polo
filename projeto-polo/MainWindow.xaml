@@ -112,6 +112,7 @@
                 x:Name="MyDataGrid"
                 Grid.Row="1"
                 AutoGenerateColumns="False"
+                IsReadOnly="True"
                 ItemsSource="{Binding Items}"
                 SelectionUnit="FullRow">
 
