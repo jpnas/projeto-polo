@@ -28,9 +28,31 @@ namespace projeto_polo.ViewModel
                 {
                     _isLoading = value;
                     OnPropertyChanged(nameof(IsLoading));
+                    if (!value)
+                    {
+                        if (Items.Count() == 0)
+                        {
+                            EmptyStateVisibility = Visibility.Visible;
+                        } else
+                        {
+                            EmptyStateVisibility = Visibility.Hidden;
+                        }
+                    }
                 }
             }
         }
+
+        private Visibility _emptyStateVisibility = Visibility.Hidden;
+        public Visibility EmptyStateVisibility
+        {
+            get { return _emptyStateVisibility; }
+            set
+            {
+                _emptyStateVisibility = value;
+                OnPropertyChanged(nameof(EmptyStateVisibility));
+            }
+        }
+
         public class ResponseWrapper
         {
             public List<Item>? Value { get; set; }
@@ -49,12 +71,13 @@ namespace projeto_polo.ViewModel
         }
         public ICommand ExportCommand { get; private set; }
 
-        public RelayCommand RefreshCommand => new RelayCommand(execute => FetchDataAsync());
+        public RelayCommand RefreshCommand => new RelayCommand(execute =>  FetchDataAsync());
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindowViewModel()
         {
+            IsLoading = true;
             Items = new ObservableCollection<Item>();
             TableFilter = new TableFilter
             {
@@ -150,6 +173,7 @@ namespace projeto_polo.ViewModel
         {
             try
             {
+                Items.Clear();
                 IsLoading = true;
                 bool hasIndicatorFilter = false;
 
@@ -211,12 +235,10 @@ namespace projeto_polo.ViewModel
                         jsonResponse = await response.Content.ReadAsStringAsync();
                         var responseObj = JsonConvert.DeserializeObject<ResponseWrapper>(jsonResponse);
                         var items = responseObj.Value;
-                        Items.Clear();
                         foreach (var item in items)
                         {
                             Items.Add(item);
                         }
-                        MessageBox.Show("Dados atualizados com sucesso.");
                     }
                 }
             }

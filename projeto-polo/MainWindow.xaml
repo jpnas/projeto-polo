@@ -17,7 +17,6 @@
         <Grid Background="#FFE5E5E5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60" />
-
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid>
@@ -119,5 +118,11 @@
                 IsIndeterminate="{Binding IsLoading}"
                 Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
         </Grid>
+        <TextBlock
+            Name="EmptyState"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Text="Nenhum resultado encontrado"
+            Visibility="{Binding EmptyStateVisibility}" />
     </Grid>
 </Window>
